@@ -2,6 +2,8 @@ package dal.gravity;
 
 /**
  * Represents a pendulum
+ * refactoring by collapsing the hierarchy by one.  merged the super class 
+ * AbstractPendulum with subclass AbstractEarthPendulum
  */
 public abstract class AbstractPendulum {
 
@@ -12,6 +14,7 @@ public abstract class AbstractPendulum {
     private double stringLength, pointMass;
     protected double theta0; 
     protected double g; 
+    public static final double GRAVITY = 9.80665;
 
     /**
      * Creates a new Pendulum instance using
@@ -30,6 +33,18 @@ public abstract class AbstractPendulum {
 		 ("invalid angular displacement: " + inTheta0);
 	if (validGC (inG)) g = inG;
 	else throw new IllegalArgumentException ("invalid local gravitational field: " + inG);
+    }
+    
+    // constructor for the earth only
+    public AbstractPendulum(double inLength, double inMass, double inTheta0){
+    	if (validStringLength (inLength)) stringLength = inLength;
+    	else throw new IllegalArgumentException ("invalid string length: " + inLength);
+    	if (validPointMass(inMass)) pointMass = inMass;
+    	else throw new IllegalArgumentException ("invalid point mass: " + inMass);
+    	if (validDisplacement (inTheta0)) theta0 = inTheta0;
+    	else throw new IllegalArgumentException 
+    		 ("invalid angular displacement: " + inTheta0);
+    	g=GRAVITY;
     }
 
     private boolean validDisplacement (double val) { return (val >= 0); }
